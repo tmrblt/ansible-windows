@@ -1,0 +1,21 @@
+---
+- name: Update all packages using Chocolatey
+  hosts: all
+  gather_facts: false
+  tasks:
+
+  - name: Update all installed packages
+    chocolatey.chocolatey.win_chocolatey:
+      name: all
+      state: latest
+
+  - name: Check python version
+    ansible.windows.win_command: python --version
+    register: check_python_version
+
+  - name: Check nodejs version
+    ansible.windows.win_command: node --version
+    register: check_node_version
+
+  - ansible.builtin.debug:
+      msg: Python Version is {{ check_python_version.stdout_lines[0] }} and NodeJS version is {{ check_node_version.stdout_lines[0] }}
